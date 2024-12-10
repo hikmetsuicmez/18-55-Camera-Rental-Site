@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.camerarentalapp.ui.auth.LoginScreen
 import com.example.camerarentalapp.ui.auth.RegisterScreen
+import com.example.camerarentalapp.ui.gallery.GalleryScreen
+import com.example.camerarentalapp.ui.home.HomeScreen
 import com.example.camerarentalapp.ui.welcome.WelcomeScreen
 
 class MainActivity : ComponentActivity() {
@@ -24,11 +26,20 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "welcome") {
+    NavHost(navController = navController, startDestination = "home") {
+
+        composable("gallery") {
+            GalleryScreen(navController)
+        }
+
+        composable("home") {
+            HomeScreen(navController)
+        }
 
         composable("welcome") {
             WelcomeScreen(navController)
         }
+
 
         composable("login") {
             LoginScreen(onNavigateToRegister = {
