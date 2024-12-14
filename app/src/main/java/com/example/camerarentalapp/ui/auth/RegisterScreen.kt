@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import com.example.camerarentalapp.R
 import com.example.camerarentalapp.model.User
 import com.example.camerarentalapp.storage.UserStorage
+import kotlinx.coroutines.delay
 
 @Composable
 fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
@@ -25,6 +26,8 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var registerMessage by remember { mutableStateOf("") }
+    var registerSuccesful by remember { mutableStateOf(false) }
+
 
     Box(
         modifier = Modifier
@@ -68,7 +71,7 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email") },
+                    label = { Text("E-Posta") },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -77,7 +80,7 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password") },
+                    label = { Text("Şifre") },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation()
                 )
@@ -87,7 +90,7 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                 OutlinedTextField(
                     value = confirmPassword,
                     onValueChange = { confirmPassword = it },
-                    label = { Text("Confirm Password") },
+                    label = { Text("Şifreyi Onayla") },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation()
                 )
@@ -97,35 +100,34 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                 Button(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF2424)),
                     onClick = {
-                        navController.navigate("login")
                         // Boş alan kontrolü
                         if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
-                            registerMessage = "All fields must be filled"
+                            registerMessage = "Tüm alanlar doldurulmalıdır."
                             return@Button
                         }
 
                         // E-posta formatı kontrolü
                         val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$".toRegex()
                         if (!emailRegex.matches(email)) {
-                            registerMessage = "Invalid email format"
+                            registerMessage = "Geçersiz e-posta biçimi"
                             return@Button
                         }
 
                         // Şifre eşleşme kontrolü
                         if (password != confirmPassword) {
-                            registerMessage = "Passwords do not match"
+                            registerMessage = "Şifreler eşleşmiyor"
                             return@Button
                         }
 
                         if (password.length < 6) {
-                            registerMessage = "Password must be at least 6 characters long"
+                            registerMessage = "Şifre en az 6 karakter uzunluğunda olmalıdır"
                             return@Button
                         }
 
                         // E-posta var mı kontrolü
                         val users = UserStorage.loadUsersFromFile(context)
                         if (users.any { it.email == email }) {
-                            registerMessage = "Registration Failed: Email already exists"
+                            registerMessage = "Kayıt Başarısız Oldu: E-posta zaten mevcut"
                             return@Button
                         }
 
@@ -133,11 +135,18 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                         val newUser = User(email = email, password = password)
                         users.add(newUser)
                         UserStorage.saveUsersToFile(context, users)
-                        registerMessage = "User registered: $email"
+
+                        if (newUser != null) {
+                            registerMessage = "Kayıtlı Kullanıcı : $email"
+                            registerSuccesful = true
+                        } else {
+                            registerMessage = "Kayıt Başarısız oldu."
+                        }
+
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Register")
+                    Text("Kayıt Ol")
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -151,9 +160,16 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                     onClick = onNavigateBack
                 )
                 {
-                    Text("Back to Login")
+                    Text("Giriş sayfasına dön.")
                 }
             }
+        }
+    }
+
+    if (registerSuccesful) {
+        LaunchedEffect(key1 = registerSuccesful) {
+            delay(700)
+            navController.navigate("login")
         }
     }
 }

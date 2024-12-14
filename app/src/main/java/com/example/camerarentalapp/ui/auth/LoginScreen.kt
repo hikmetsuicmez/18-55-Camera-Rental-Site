@@ -68,7 +68,7 @@ fun LoginScreen(navController: NavController, onNavigateToRegister: () -> Unit) 
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("Email") },
+                    label = { Text("E-Posta") },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -77,7 +77,7 @@ fun LoginScreen(navController: NavController, onNavigateToRegister: () -> Unit) 
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Password") },
+                    label = { Text("Şifre") },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation()
                 )
@@ -91,16 +91,16 @@ fun LoginScreen(navController: NavController, onNavigateToRegister: () -> Unit) 
                         val user = users.find { it.email == email && it.password == password }
 
                         if (user != null) {
-                            loginMessage = "Login Successful: ${user.email}"
+                            loginMessage = "Giriş Başarılı: ${user.email}"
                             loginSuccessful = true // Başarılı giriş durumu
                         } else {
-                            loginMessage = "Login Failed: Incorrect email or password"
+                            loginMessage = "Giriş Başarısız Oldu: Yanlış e-posta veya şifre"
                         }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Text("Login")
+                    Text("Giriş Yap")
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -113,7 +113,7 @@ fun LoginScreen(navController: NavController, onNavigateToRegister: () -> Unit) 
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC91B1B)),
                     onClick = onNavigateToRegister,
                 ) {
-                    Text("Don't have an account? Register")
+                    Text("Hesabınız yok mu? Kayıt ol")
                 }
             }
         }
