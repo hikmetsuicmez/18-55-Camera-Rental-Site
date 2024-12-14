@@ -5,8 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,6 +19,7 @@ import com.example.camerarentalapp.R
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,14 +37,7 @@ fun BottomNavigationBar(navController: NavController) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_menu), // Replace with correct icon
-                    contentDescription = "Menu",
-                    modifier = Modifier
-                        .width(70.dp)
-                        .height(70.dp)
-                        .clickable { navController.navigate("menu") }
-                )
+                DropdownMenuComponent(navController)
                 Text(
                     text = "Menü",
                     fontSize = 12.sp,
@@ -69,7 +63,7 @@ fun BottomNavigationBar(navController: NavController) {
                         modifier = Modifier
                             .size(80.dp)
                             .background(Color(0xFFC91B1B), shape = CircleShape)
-                            .clickable { navController.navigate("gallery") }
+                            .clickable { navController.navigate("home") }
                             .align(Alignment.Center)
                     ) {
                         Image(
