@@ -136,12 +136,8 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                         users.add(newUser)
                         UserStorage.saveUsersToFile(context, users)
 
-                        if (newUser != null) {
-                            registerMessage = "Kayıtlı Kullanıcı : $email"
-                            registerSuccesful = true
-                        } else {
-                            registerMessage = "Kayıt Başarısız oldu."
-                        }
+                        registerMessage = "Kayıtlı Kullanıcı : $email"
+                        registerSuccesful = true
 
                     },
                     modifier = Modifier.fillMaxWidth()
@@ -168,7 +164,7 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
 
     if (registerSuccesful) {
         LaunchedEffect(key1 = registerSuccesful) {
-            delay(700)
+            delay(1000)
             navController.navigate("login")
         }
     }
