@@ -19,7 +19,6 @@ import com.example.camerarentalapp.R
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
-    var isMenuOpen by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
