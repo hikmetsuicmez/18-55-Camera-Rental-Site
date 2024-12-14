@@ -32,7 +32,7 @@ fun DropdownMenuComponent(navController: NavController) {
         Box {
             Image(
                 painter = painterResource(id = R.drawable.ic_menu),
-                contentDescription = "Menu",
+                contentDescription = "Menü",
                 modifier = Modifier
                     .size(60.dp)
                     .clickable { isMenuOpen = !isMenuOpen }

@@ -74,7 +74,7 @@ fun WelcomeScreen(navController: NavController) {
                     .background(Color.LightGray, shape = RectangleShape)
             ) {
                 Text(
-                    text = "Sign In",
+                    text = "Giriş Yap",
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Black
@@ -93,7 +93,7 @@ fun WelcomeScreen(navController: NavController) {
                     .background(Color.LightGray, shape = RectangleShape)
             ) {
                 Text(
-                    text = "Sign up",
+                    text = "Kayıt Ol",
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Black
@@ -112,7 +112,7 @@ fun WelcomeScreen(navController: NavController) {
                     .background(Color.LightGray, shape = RectangleShape)
             ) {
                 Text(
-                    text = "Explore",
+                    text = "Keşfer",
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Black

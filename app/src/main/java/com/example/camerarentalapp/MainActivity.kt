@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "welcome") {
 
         composable("gallery") {
             GalleryScreen(navController)
