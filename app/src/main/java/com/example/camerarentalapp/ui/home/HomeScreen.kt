@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.camerarentalapp.R
+import com.example.camerarentalapp.ui.components.BottomNavigationBar
 
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -67,11 +68,12 @@ fun HomeScreen(navController: NavController) {
             }
 
             // Butonları Ortalamak İçin Boşluk
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.weight(0.6f))
+
 
             // Butonlar
             Button(
-                onClick = { navController.navigate("login") },
+                onClick = { navController.navigate("profile") },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                 shape = RectangleShape,
                 modifier = Modifier
@@ -90,7 +92,7 @@ fun HomeScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(35.dp))
 
             Button(
-                onClick = { navController.navigate("register") },
+                onClick = { navController.navigate("equipment") },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                 shape = RectangleShape,
                 modifier = Modifier
@@ -115,86 +117,9 @@ fun HomeScreen(navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(85.dp)
-                .background(Color(0xFFFF2424))
                 .align(Alignment.BottomCenter)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center),
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Menu Button
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_menu), // Replace with correct icon
-                        contentDescription = "Menu",
-                        modifier = Modifier
-                            .width(70.dp)
-                            .height(70.dp)
-                    )
-                    Text(
-                        text = "Menü",
-                        fontSize = 12.sp,
-                        color = Color.White
-                    )
-                }
-
-                Box(
-                    modifier = Modifier
-                        .size(90.dp)
-                        .background(Color(0xFFFF2424), shape = CircleShape)
-                        .offset(y = (-15).dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(90.dp)
-                            .background(Color.White, shape = CircleShape)
-                            .align(Alignment.Center)
-                            .padding(5.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(80.dp)
-                                .background(Color(0xFFC91B1B), shape = CircleShape)
-                                .clickable { navController.navigate("gallery") }
-                                .align(Alignment.Center)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_home), // Replace with correct icon
-                                contentDescription = "Galeri",
-                                modifier = Modifier
-                                    .size(55.dp)
-                                    .background(Color(0xFFC91B1B), shape = CircleShape)
-                                    .align(Alignment.Center)
-                            )
-                        }
-                    }
-                }
-
-
-
-
-                // Profile Button
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_profile), // Replace with correct icon
-                        contentDescription = "Profil",
-                        modifier = Modifier.size(70.dp)
-                    )
-                    Text(
-                        text = "Profil",
-                        fontSize = 12.sp,
-                        color = Color.White
-                    )
-                }
-            }
+            BottomNavigationBar(navController)
         }
     }
 }

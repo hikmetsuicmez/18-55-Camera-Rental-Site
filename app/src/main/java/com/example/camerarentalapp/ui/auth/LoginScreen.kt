@@ -1,72 +1,130 @@
 package com.example.camerarentalapp.ui.auth
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavController
+import com.example.camerarentalapp.R
 import com.example.camerarentalapp.storage.UserStorage
+import kotlinx.coroutines.delay
 
 @Composable
-fun LoginScreen(onNavigateToRegister: () -> Unit) {
+fun LoginScreen(navController: NavController, onNavigateToRegister: () -> Unit) {
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var loginMessage by remember { mutableStateOf("") }
+    var loginSuccessful by remember { mutableStateOf(false) }
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
+        // Background Image
+        Image(
+            painter = painterResource(id = R.drawable.background_image),
+            contentDescription = "Background Image",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                val users = UserStorage.loadUsersFromFile(context)
-                val user = users.find { it.email == email && it.password == password }
-
-                if (user != null) {
-                    loginMessage = "Login Successful: ${user.email}"
-                } else {
-                    loginMessage = "Login Failed: Incorrect email or password"
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Login")
+            // Sabit Logo Kısmı
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(130.dp)
+                    .background(Color.Black),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "Logo",
+                    modifier = Modifier.size(250.dp, 100.dp)
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text("Email") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Password") },
+                    modifier = Modifier.fillMaxWidth(),
+                    visualTransformation = PasswordVisualTransformation()
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF2424)),
+                    onClick = {
+                        val users = UserStorage.loadUsersFromFile(context)
+                        val user = users.find { it.email == email && it.password == password }
+
+                        if (user != null) {
+                            loginMessage = "Login Successful: ${user.email}"
+                            loginSuccessful = true // Başarılı giriş durumu
+                        } else {
+                            loginMessage = "Login Failed: Incorrect email or password"
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text("Login")
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(loginMessage)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                TextButton(
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC91B1B)),
+                    onClick = onNavigateToRegister,
+                ) {
+                    Text("Don't have an account? Register")
+                }
+            }
         }
+    }
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(loginMessage)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        TextButton(onClick = onNavigateToRegister) {
-            Text("Don't have an account? Register")
+    // Başarılı giriş durumunda gecikmeli yönlendirme
+    if (loginSuccessful) {
+        LaunchedEffect(key1 = loginSuccessful) {
+            delay(700)
+            navController.navigate("home")
         }
     }
 }
+
