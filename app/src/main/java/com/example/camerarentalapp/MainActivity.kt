@@ -7,10 +7,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.camerarentalapp.ui.activity.ActivityScreen
 import com.example.camerarentalapp.ui.auth.LoginScreen
 import com.example.camerarentalapp.ui.auth.RegisterScreen
+import com.example.camerarentalapp.ui.course.CourseScreen
+import com.example.camerarentalapp.ui.equipment.EquipmentScreen
 import com.example.camerarentalapp.ui.gallery.GalleryScreen
 import com.example.camerarentalapp.ui.home.HomeScreen
+import com.example.camerarentalapp.ui.profile.ProfileScreen
 import com.example.camerarentalapp.ui.welcome.WelcomeScreen
 
 class MainActivity : ComponentActivity() {
@@ -36,19 +40,36 @@ fun AppNavigation() {
             HomeScreen(navController)
         }
 
+        composable("activity") {
+            ActivityScreen(navController)
+        }
+
+        composable("course") {
+            CourseScreen(navController)
+        }
+
         composable("welcome") {
             WelcomeScreen(navController)
         }
 
+        composable("profile") {
+            ProfileScreen(navController)
+        }
+
+        composable("equipment") {
+            EquipmentScreen(navController)
+        }
+
 
         composable("login") {
-            LoginScreen(onNavigateToRegister = {
+            LoginScreen(navController, onNavigateToRegister = {
                 navController.navigate("register")
-            })
+            }
+            )
         }
 
         composable("register") {
-            RegisterScreen(onNavigateBack = {
+            RegisterScreen(navController, onNavigateBack = {
                 navController.popBackStack()
             })
         }
