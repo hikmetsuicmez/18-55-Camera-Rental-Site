@@ -73,7 +73,7 @@ fun EquipmentScreen(navController: NavController) {
 
             // Butonlar
             Button(
-                onClick = { },
+                onClick = { navController.navigate("rentalpage") },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                 shape = RectangleShape,
                 modifier = Modifier

@@ -15,6 +15,7 @@ import com.example.camerarentalapp.ui.equipment.EquipmentScreen
 import com.example.camerarentalapp.ui.gallery.GalleryScreen
 import com.example.camerarentalapp.ui.home.HomeScreen
 import com.example.camerarentalapp.ui.profile.ProfileScreen
+import com.example.camerarentalapp.ui.rental.RentalPageScreen
 import com.example.camerarentalapp.ui.welcome.WelcomeScreen
 
 class MainActivity : ComponentActivity() {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "welcome") {
+    NavHost(navController = navController, startDestination = "rentalpage") {
 
         composable("gallery") {
             GalleryScreen(navController)
@@ -58,6 +59,10 @@ fun AppNavigation() {
 
         composable("equipment") {
             EquipmentScreen(navController)
+        }
+
+        composable("rentalpage") {
+            RentalPageScreen(navController)
         }
 
 
