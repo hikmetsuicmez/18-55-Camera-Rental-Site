@@ -86,7 +86,7 @@ fun EquipmentScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(35.dp))
 
             Button(
-                onClick = { },
+                onClick = { navController.navigate("sellpage")},
                 colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                 shape = RectangleShape,
                 modifier = Modifier
