@@ -61,6 +61,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation(libs.firebase.crashlytics.buildtools)
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation ("io.coil-kt:coil-compose:2.2.2")
+
 
 
     testImplementation("junit:junit:4.13.2")
