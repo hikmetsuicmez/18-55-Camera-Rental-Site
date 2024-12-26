@@ -1,7 +1,5 @@
 package com.example.camerarentalapp.ui.sell
 
-import android.app.Activity
-import android.content.Intent
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.camerarentalapp.R
 import com.example.camerarentalapp.model.Product
@@ -91,7 +90,7 @@ fun SellProductPage(navController: NavController) {
                 ) {
                     selectedImageUri?.let {
                         Image(
-                            painter = rememberImagePainter(data = it),
+                            painter = rememberAsyncImagePainter(model = it),
                             contentDescription = "Selected Photo",
                             modifier = Modifier.fillMaxSize()
                         )
