@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.example.camerarentalapp.R
 import com.example.camerarentalapp.model.Product
 import com.example.camerarentalapp.storage.ProductStorage
