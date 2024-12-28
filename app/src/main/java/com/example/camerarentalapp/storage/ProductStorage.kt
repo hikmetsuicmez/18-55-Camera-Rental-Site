@@ -74,8 +74,15 @@ object ProductStorage {
         return filteredProducts
     }
 
+    fun getProductsByName(context: Context, name: String): Product? {
+        val sharedPreferences = context.getSharedPreferences("products", Context.MODE_PRIVATE)
+        val existingProductsJson = sharedPreferences.getString("product_list", "[]") ?: "[]"
 
+        val type = object : TypeToken<List<Product>>() {}.type
+        val productList: List<Product> = Gson().fromJson(existingProductsJson, type)
 
+        return productList.find { it.name == name }
+    }
 
 
 

@@ -16,6 +16,7 @@ import com.example.camerarentalapp.ui.gallery.GalleryScreen
 import com.example.camerarentalapp.ui.home.HomeScreen
 import com.example.camerarentalapp.ui.profile.ProfileScreen
 import com.example.camerarentalapp.ui.rental.EquipmentListScreen
+import com.example.camerarentalapp.ui.rental.ProductDetailScreen
 import com.example.camerarentalapp.ui.rental.RentalPageScreen
 import com.example.camerarentalapp.ui.sell.SellProductPage
 import com.example.camerarentalapp.ui.welcome.WelcomeScreen
@@ -88,6 +89,12 @@ fun AppNavigation() {
             val category = backStackEntry.arguments?.getString("category") ?: ""
             EquipmentListScreen(navController = navController, category = category)
         }
+
+        composable("product_detail/{productName}") { backStackEntry ->
+            val productName = backStackEntry.arguments?.getString("productName") ?: ""
+            ProductDetailScreen(navController = navController, productName = productName)
+        }
+
 
     }
 }
