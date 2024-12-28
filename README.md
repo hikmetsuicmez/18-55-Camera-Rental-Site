@@ -43,7 +43,13 @@ Dinamik bir menü, aşağıdaki seçenekleri içerir:
 - 
 ![image](https://github.com/user-attachments/assets/8b862ded-4e58-45cd-ba43-3737798fded4)
 
+### 6. **Ürün ekleme Sayfası**
+Ürününüzü ekleyebileceğiniz, Fotoğraf ekleyebileceğiniz ve ürün detaylarını verebileceğiniz sayfa.
+![image](https://github.com/user-attachments/assets/31d6f073-5767-4965-9500-f59af06b1f1b)
 
+### 7. **Ürün Sayfası**
+Ürünlerin kategorilerine göre listelendiği sayfa.
+![image](https://github.com/user-attachments/assets/19777511-a44f-43ba-bea5-0e87c16346bc)
 
 ---
 
@@ -72,5 +78,7 @@ app/
 │   │   ├── gallery/      # Galeri ekranı
 │   │   ├── home/         # Ana Sayfa ekranı
 │   │   ├── profile/      # Profil ekranı
+│   │   ├── rental/       # Kiralama ekranı
+│   │   ├── sell/       # Ürün ekleme ekranı
 │   │   ├── welcome/      # Hoş geldiniz ekranı
 │   ├── MainActivity.kt   # Navigation ile başlangıç noktası
