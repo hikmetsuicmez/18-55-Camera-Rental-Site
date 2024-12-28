@@ -68,13 +68,13 @@ fun RentalPageScreen(navController: NavController) {
                         navController = navController,
                         imageRes = R.drawable.camera_icon,
                         label = "KAMERA",
-                        onClick = { navController.navigate("cameraPage") }
+                        onClick = { navController.navigate("equipmentList/Kamera") }
                     )
                     EquipmentCard(
                         navController = navController,
                         imageRes = R.drawable.lens_icon,
                         label = "LENS",
-                        onClick = { navController.navigate("lensPage") }
+                        onClick = { navController.navigate("equipmentList/Lens") }
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
@@ -86,13 +86,13 @@ fun RentalPageScreen(navController: NavController) {
                         navController = navController,
                         imageRes = R.drawable.tripod_icon,
                         label = "TRIPOD",
-                        onClick = { navController.navigate("tripodPage") }
+                        onClick = { navController.navigate("equipmentList/Tripod") }
                     )
                     EquipmentCard(
                         navController = navController,
                         imageRes = R.drawable.light_icon,
                         label = "IŞIK",
-                        onClick = { navController.navigate("lightPage") }
+                        onClick = { navController.navigate("equipmentList/Işık") }
                     )
                 }
             }

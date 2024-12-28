@@ -15,12 +15,10 @@ object UserStorage {
         UserRepository.userList.addAll(loadedUsers)
     }
 
-    // Kullanıcıları JSON dosyasına kaydet
     fun saveUsersToFile(context: Context, users: List<User>) {
         val gson = Gson()
         val json = gson.toJson(users)
 
-        // Dosyayı belirlenen bir konuma yaz
         val exportPath = File(context.filesDir, JSON_FILE_NAME)
         exportPath.writeText(json)
 

@@ -22,26 +22,37 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.example.camerarentalapp.R
 import com.example.camerarentalapp.model.Product
 import com.example.camerarentalapp.storage.ProductStorage
 import com.example.camerarentalapp.ui.components.BottomNavigationBar
+import java.io.File
 
 @Composable
 fun SellProductPage(navController: NavController) {
     var name by remember { mutableStateOf("") }
     var contactInfo by remember { mutableStateOf("") }
-    val daysAndPrices = remember { mutableStateListOf(Pair("", ""), Pair("", ""), Pair("", ""), Pair("", "")) }
+    val daysAndPrices =
+        remember { mutableStateListOf(Pair("", ""), Pair("", ""), Pair("", ""), Pair("", "")) }
     var selectedImageUri by remember { mutableStateOf<String?>(null) }
+    var selectedImagePath by remember { mutableStateOf<String?>(null) }
     var selectedCategory by remember { mutableStateOf("") } // Kategori seçimi için
     val categories = listOf("Kamera", "Lens", "Tripod", "Işık") // Kategori seçenekleri
 
-    // Fotoğraf seçici başlatıcı
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
-        selectedImageUri = uri?.toString()
+        if (uri != null) {
+            val context = navController.context
+            val inputStream = context.contentResolver.openInputStream(uri)
+            val outputFile = File(context.filesDir, "product_${System.currentTimeMillis()}.jpg")
+            inputStream.use { input ->
+                outputFile.outputStream().use { output ->
+                    input?.copyTo(output)
+                }
+            }
+            selectedImagePath = outputFile.absolutePath // Kalıcı path'i kaydediyoruz
+        }
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -69,7 +80,6 @@ fun SellProductPage(navController: NavController) {
                 )
             }
 
-            // Scrollable Content
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -79,7 +89,7 @@ fun SellProductPage(navController: NavController) {
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Add Photo Section
+                // Fotoğraf Ekleme Alanı
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -88,12 +98,16 @@ fun SellProductPage(navController: NavController) {
                         .clickable { launcher.launch("image/*") },
                     contentAlignment = Alignment.Center
                 ) {
-                    selectedImageUri?.let {
-                        Image(
-                            painter = rememberAsyncImagePainter(model = it),
-                            contentDescription = "Selected Photo",
-                            modifier = Modifier.fillMaxSize()
-                        )
+                    selectedImagePath?.let { path ->
+                        val file = File(path)
+                        if (file.exists()) {
+                            Image(
+                                painter = rememberAsyncImagePainter(model = file),
+                                contentDescription = "Selected Photo",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
                     } ?: Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Image(
                             painter = painterResource(id = R.drawable.add_photo_icon),
@@ -108,9 +122,17 @@ fun SellProductPage(navController: NavController) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Form Fields
-                TextFieldWithPlaceholder(value = name, onValueChange = { name = it }, placeholder = "İsim")
+                TextFieldWithPlaceholder(
+                    value = name,
+                    onValueChange = { name = it },
+                    placeholder = "İsim"
+                )
                 Spacer(modifier = Modifier.height(8.dp))
-                TextFieldWithPlaceholder(value = contactInfo, onValueChange = { contactInfo = it }, placeholder = "İletişim Bilgisi")
+                TextFieldWithPlaceholder(
+                    value = contactInfo,
+                    onValueChange = { contactInfo = it },
+                    placeholder = "İletişim Bilgisi"
+                )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Kategori Seçimi
@@ -123,7 +145,10 @@ fun SellProductPage(navController: NavController) {
                         .clickable { expanded = true }
                         .padding(16.dp)
                 ) {
-                    Text(text = if (selectedCategory.isEmpty()) "Kategori Seçin" else selectedCategory, color = Color.Black)
+                    Text(
+                        text = if (selectedCategory.isEmpty()) "Kategori Seçin" else selectedCategory,
+                        color = Color.Black
+                    )
                 }
                 DropdownMenu(
                     expanded = expanded,
@@ -171,7 +196,7 @@ fun SellProductPage(navController: NavController) {
                 }
             }
 
-            // Submit Button
+            // Tamamla Butonu
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -180,33 +205,48 @@ fun SellProductPage(navController: NavController) {
             ) {
                 Button(
                     onClick = {
-                        // Ürün Modelini Oluştur
-                        val product = Product(
-                            name = name,
-                            contactInfo = contactInfo,
-                            daysAndPrices = daysAndPrices,
-                            imageResource = selectedImageUri,
-                            category = selectedCategory
-                        )
+                        try {
 
-                        // Ürünü Kaydet
-                        ProductStorage.saveProduct(navController.context, product)
 
-                        // Mesaj Göster ve Ana Sayfaya Dön
-                        Toast.makeText(navController.context, "Ürün başarıyla eklendi!", Toast.LENGTH_SHORT).show()
-                        navController.popBackStack()
-                        navController.navigate("home")
+                            val product = Product(
+                                name = name,
+                                contactInfo = contactInfo,
+                                daysAndPrices = daysAndPrices,
+                                imageResource = selectedImagePath, // Kalıcı path'i kaydediyoruz
+                                category = selectedCategory
+                            )
+
+                            ProductStorage.saveProduct(navController.context, product)
+
+                            Toast.makeText(
+                                navController.context,
+                                "Ürün başarıyla eklendi!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            navController.popBackStack()
+                            navController.navigate("home")
+                        } catch (e: Exception) {
+                            Toast.makeText(
+                                navController.context,
+                                "Ürün eklenirken hata oluştu: ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
                 ) {
-                    Text("tamamla", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+                    Text(
+                        "tamamla",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
                 }
             }
 
-            // Bottom Navigation Bar
             BottomNavigationBar(navController)
         }
     }
