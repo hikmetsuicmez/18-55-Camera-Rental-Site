@@ -92,7 +92,7 @@ fun EquipmentListScreen(navController: NavController, category: String) {
             ) {
                 items(products.value) { product ->
                     ProductCard(product = product, onClick = {
-                        navController.navigate("home")
+                        navController.navigate("product_detail/${product.name}")
                         println("Tıklandı: ${product.name}")
                     })
                 }
@@ -117,7 +117,6 @@ fun ProductCard(product: Product, onClick: () -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
-        // Main Card with Image
         Card(
             modifier = Modifier
                 .fillMaxWidth()

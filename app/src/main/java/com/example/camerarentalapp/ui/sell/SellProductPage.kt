@@ -36,8 +36,8 @@ fun SellProductPage(navController: NavController) {
         remember { mutableStateListOf(Pair("", ""), Pair("", ""), Pair("", ""), Pair("", "")) }
     var selectedImageUri by remember { mutableStateOf<String?>(null) }
     var selectedImagePath by remember { mutableStateOf<String?>(null) }
-    var selectedCategory by remember { mutableStateOf("") } // Kategori seçimi için
-    val categories = listOf("Kamera", "Lens", "Tripod", "Işık") // Kategori seçenekleri
+    var selectedCategory by remember { mutableStateOf("") }
+    val categories = listOf("Kamera", "Lens", "Tripod", "Işık")
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -123,9 +123,7 @@ fun SellProductPage(navController: NavController) {
 
                 // Form Fields
                 TextFieldWithPlaceholder(
-                    value = name,
-                    onValueChange = { name = it },
-                    placeholder = "İsim"
+                    value = name, onValueChange = { name = it }, placeholder = "İsim"
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TextFieldWithPlaceholder(
@@ -138,32 +136,35 @@ fun SellProductPage(navController: NavController) {
                 // Kategori Seçimi
                 Text("Kategori Seçimi", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                 var expanded by remember { mutableStateOf(false) }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.LightGray, RoundedCornerShape(8.dp))
-                        .clickable { expanded = true }
-                        .padding(16.dp)
-                ) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.LightGray, RoundedCornerShape(8.dp))
+                    .clickable { expanded = true }
+                    .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(
                         text = if (selectedCategory.isEmpty()) "Kategori Seçin" else selectedCategory,
                         color = Color.Black
                     )
+                    Text("▼", color = Color.Gray)
                 }
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
+
+                Box(
+                    modifier = Modifier.offset(y = 10.dp)
                 ) {
-                    categories.forEach { category ->
-                        DropdownMenuItem(
-                            text = { Text(category) },
-                            onClick = {
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                    ) {
+                        categories.forEach { category ->
+                            DropdownMenuItem(text = { Text(category) }, onClick = {
                                 selectedCategory = category
                                 expanded = false
-                            }
-                        )
+                            })
+                        }
                     }
                 }
+
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -176,27 +177,19 @@ fun SellProductPage(navController: NavController) {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         TextFieldWithPlaceholder(
-                            value = pair.first,
-                            onValueChange = { newDay ->
+                            value = pair.first, onValueChange = { newDay ->
                                 daysAndPrices[index] = pair.copy(first = newDay)
-                            },
-                            placeholder = "Gün",
-                            modifier = Modifier.weight(1f)
+                            }, placeholder = "Gün", modifier = Modifier.weight(1f)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         TextFieldWithPlaceholder(
-                            value = pair.second,
-                            onValueChange = { newPrice ->
+                            value = pair.second, onValueChange = { newPrice ->
                                 daysAndPrices[index] = pair.copy(second = newPrice)
-                            },
-                            placeholder = "Fiyat",
-                            modifier = Modifier.weight(1f)
+                            }, placeholder = "Fiyat", modifier = Modifier.weight(1f)
                         )
                     }
                 }
             }
-
-            // Tamamla Butonu
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -215,13 +208,10 @@ fun SellProductPage(navController: NavController) {
                                 imageResource = selectedImagePath, // Kalıcı path'i kaydediyoruz
                                 category = selectedCategory
                             )
-
                             ProductStorage.saveProduct(navController.context, product)
 
                             Toast.makeText(
-                                navController.context,
-                                "Ürün başarıyla eklendi!",
-                                Toast.LENGTH_SHORT
+                                navController.context, "Ürün başarıyla eklendi!", Toast.LENGTH_SHORT
                             ).show()
                             navController.popBackStack()
                             navController.navigate("home")
@@ -252,7 +242,6 @@ fun SellProductPage(navController: NavController) {
     }
 }
 
-
 @Composable
 fun TextFieldWithPlaceholder(
     value: String,
@@ -270,9 +259,7 @@ fun TextFieldWithPlaceholder(
     ) {
         if (value.isEmpty()) {
             Text(
-                text = placeholder,
-                fontSize = 14.sp,
-                color = Color.Gray
+                text = placeholder, fontSize = 14.sp, color = Color.Gray
             )
         }
         TextField(
@@ -280,8 +267,7 @@ fun TextFieldWithPlaceholder(
             onValueChange = onValueChange,
             singleLine = true,
             textStyle = androidx.compose.ui.text.TextStyle(
-                fontSize = 14.sp,
-                color = Color.Black
+                fontSize = 14.sp, color = Color.Black
             ),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
