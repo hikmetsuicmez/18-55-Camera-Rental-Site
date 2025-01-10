@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.example.camerarentalapp.R
+import com.example.camerarentalapp.model.User
 import com.example.camerarentalapp.storage.UserStorage
 import kotlinx.coroutines.delay
 
@@ -91,8 +92,11 @@ fun LoginScreen(navController: NavController, onNavigateToRegister: () -> Unit) 
                         val user = users.find { it.email == email && it.password == password }
 
                         if (user != null) {
-                            loginMessage = "Giriş Başarılı: ${user.email}"
-                            loginSuccessful = true // Başarılı giriş durumu
+                            // Giriş başarılı: Kullanıcıyı sakla
+                            UserStorage.currentUser = user
+
+                            loginMessage = "Giriş Başarılı: ${user.fullName}"
+                            loginSuccessful = true
                         } else {
                             loginMessage = "Giriş Başarısız Oldu: Yanlış e-posta veya şifre"
                         }
@@ -119,11 +123,11 @@ fun LoginScreen(navController: NavController, onNavigateToRegister: () -> Unit) 
         }
     }
 
-    // Başarılı giriş durumunda gecikmeli yönlendirme
+    // Başarılı giriş durumunda yönlendirme
     if (loginSuccessful) {
         LaunchedEffect(key1 = loginSuccessful) {
             delay(700)
-            navController.navigate("home")
+            navController.navigate("home") // Ana sayfaya yönlendirme
         }
     }
 }

@@ -112,7 +112,7 @@ fun WelcomeScreen(navController: NavController) {
                     .background(Color.LightGray, shape = RectangleShape)
             ) {
                 Text(
-                    text = "Keşfer",
+                    text = "Keşfet",
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Black

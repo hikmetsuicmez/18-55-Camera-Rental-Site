@@ -1,6 +1,7 @@
 package com.example.camerarentalapp.model
 
 data class User(
-    val email: String,
-    val password: String
+    var email: String,
+    val password: String,
+    var fullName: String
 )

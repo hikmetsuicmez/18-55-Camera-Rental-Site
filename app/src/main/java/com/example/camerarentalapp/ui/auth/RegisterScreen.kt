@@ -24,6 +24,7 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var fullName by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var registerMessage by remember { mutableStateOf("") }
     var registerSuccesful by remember { mutableStateOf(false) }
@@ -68,6 +69,17 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+
+                OutlinedTextField(
+                    value = fullName,
+                    onValueChange = { fullName = it },
+                    label = { Text("İsim ve Soyisim") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
@@ -101,7 +113,7 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF2424)),
                     onClick = {
                         // Boş alan kontrolü
-                        if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
+                        if (email.isBlank() || password.isBlank() || confirmPassword.isBlank() || fullName.isBlank()) {
                             registerMessage = "Tüm alanlar doldurulmalıdır."
                             return@Button
                         }
@@ -132,7 +144,7 @@ fun RegisterScreen(navController: NavController, onNavigateBack: () -> Unit) {
                         }
 
                         // Yeni kullanıcı oluştur
-                        val newUser = User(email = email, password = password)
+                        val newUser = User(email = email, password = password, fullName = fullName)
                         users.add(newUser)
                         UserStorage.saveUsersToFile(context, users)
 

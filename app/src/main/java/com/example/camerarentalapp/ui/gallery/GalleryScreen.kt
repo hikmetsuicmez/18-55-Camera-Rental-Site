@@ -73,7 +73,7 @@ fun GalleryScreen(navController: NavController) {
 
             // Butonlar
             Button(
-                onClick = { },
+                onClick = { navController.navigate("photoGallery")},
                 colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                 shape = RectangleShape,
                 modifier = Modifier
@@ -82,7 +82,7 @@ fun GalleryScreen(navController: NavController) {
                     .background(Color.LightGray, shape = RectangleShape)
             ) {
                 Text(
-                    text = "Galerim",
+                    text = "Galeri",
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Black
@@ -92,7 +92,7 @@ fun GalleryScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(35.dp))
 
             Button(
-                onClick = { },
+                onClick = {navController.navigate("addPhoto") },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.LightGray),
                 shape = RectangleShape,
                 modifier = Modifier
@@ -101,7 +101,7 @@ fun GalleryScreen(navController: NavController) {
                     .background(Color.LightGray, shape = RectangleShape)
             ) {
                 Text(
-                    text = "Genel Medya",
+                    text = "Fotoğraf Ekle",
                     fontSize = 40.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color.Black
