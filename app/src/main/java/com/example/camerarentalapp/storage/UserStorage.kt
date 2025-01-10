@@ -9,6 +9,8 @@ import java.io.File
 object UserStorage {
     private const val JSON_FILE_NAME = "users.json"
 
+    var currentUser: User? = null
+
     fun initializeUsers(context: Context) {
         val loadedUsers = loadUsersFromFile(context)
         UserRepository.userList.clear()
@@ -25,6 +27,11 @@ object UserStorage {
         println("User data exported to: ${exportPath.absolutePath}") // Logcat'te göster
     }
 
+    fun login(context: Context, userName: String) {
+        val loadedUsers = loadUsersFromFile(context)
+        currentUser = loadedUsers.find { it.fullName == userName }
+    }
+
     // JSON formatındaki dosyayı yükle
     fun loadUsersFromFile(context: Context): MutableList<User> {
         val file = File(context.filesDir, JSON_FILE_NAME)
@@ -38,3 +45,6 @@ object UserStorage {
         }
     }
 }
+
+
+
