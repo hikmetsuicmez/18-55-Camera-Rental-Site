@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.camerarentalapp.ui.activity.ActivityScreen
 import com.example.camerarentalapp.ui.auth.LoginScreen
 import com.example.camerarentalapp.ui.auth.RegisterScreen
+import com.example.camerarentalapp.ui.comments.CommentScreen
 import com.example.camerarentalapp.ui.course.CourseScreen
 import com.example.camerarentalapp.ui.equipment.EquipmentScreen
 import com.example.camerarentalapp.ui.gallery.AddPhotoPage
@@ -49,6 +50,12 @@ fun AppNavigation() {
         composable("photoGallery") {
             PhotoGalleryPage(navController)
         }
+
+        composable("comments/{photoId}") { backStackEntry ->
+            val photoId = backStackEntry.arguments?.getString("photoId") ?: ""
+            CommentScreen(navController = navController, photoId = photoId)
+        }
+
 
         composable("home") {
             HomeScreen(navController)
