@@ -11,6 +11,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
@@ -75,15 +77,22 @@ fun PhotoGalleryPage(navController: NavController) {
                     .padding(bottom = 64.dp)
             ) {
                 items(photosList) { photo ->
-                    PhotoCard(photo) {
-                        selectedPhoto = photo
-                        showDialog = true
-                    }
+                    PhotoCard(
+                        photo = photo,
+                        onInfoClick = {
+                            selectedPhoto = photo
+                            showDialog = true
+                        },
+                        onCommentClick = {
+                            navController.navigate("comments/${photo.id}") //
+                        }
+                    )
                 }
                 item {
                     Spacer(modifier = Modifier.height(54.dp))
                 }
             }
+
         }
 
         // BottomNavigationBar
@@ -105,7 +114,7 @@ fun PhotoGalleryPage(navController: NavController) {
 }
 
 @Composable
-fun PhotoCard(photo: Photo, onInfoClick: () -> Unit) {
+fun PhotoCard(photo: Photo, onInfoClick: () -> Unit, onCommentClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -132,15 +141,30 @@ fun PhotoCard(photo: Photo, onInfoClick: () -> Unit) {
             .padding(8.dp),
         contentAlignment = Alignment.CenterEnd
     ) {
-        Image(
-            painterResource(id = R.drawable.info),
-            contentDescription = "Bilgi ikonu",
-            modifier = Modifier
-                .size(24.dp)
-                .clickable { onInfoClick() }
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            // Info ikonu
+            Image(
+                painterResource(id = R.drawable.info),
+                contentDescription = "Bilgi ikonu",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onInfoClick() }
+            )
+
+            Spacer(modifier = Modifier.width(16.dp)) // İkonlar arasında boşluk
+
+            // Comment ikonu
+            Image(
+                painterResource(id = R.drawable.ic_comment), // Yorum ikonu
+                contentDescription = "Yorum ikonu",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onCommentClick() }
+            )
+        }
     }
 }
+
 
 
 @Composable
